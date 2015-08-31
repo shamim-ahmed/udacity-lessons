@@ -44,7 +44,7 @@ public class CustomArrayAdapter extends ArrayAdapter<MovieInfo> {
       convertView = LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false);
     }
 
-    ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
+    ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view);
     TextView textView = (TextView) convertView.findViewById(R.id.text_view);
     Resources resources = context.getResources();
 

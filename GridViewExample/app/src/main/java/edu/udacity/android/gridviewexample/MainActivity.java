@@ -25,10 +25,31 @@ public class MainActivity extends AppCompatActivity {
     GridView gridView = (GridView) findViewById(R.id.grid_view);
     List<MovieInfo> itemList = new ArrayList<>();
 
-    for (String s : values) {
+    for (int i = 0; i < values.length; i++) {
+      String s = values[i];
       MovieInfo item = new MovieInfo();
       item.setName(s);
-      item.setImageId(R.drawable.google_android);
+      int imageId;
+
+      switch (i % 4) {
+        case 0:
+          imageId = R.drawable.google_android0;
+          break;
+        case 1:
+          imageId = R.drawable.google_android1;
+          break;
+        case 2:
+          imageId = R.drawable.google_android2;
+          break;
+        case 3:
+          imageId = R.drawable.google_android3;
+          break;
+        default:
+          imageId = R.drawable.google_android0;
+          break;
+      }
+
+      item.setImageId(imageId);
       itemList.add(item);
     }
 
