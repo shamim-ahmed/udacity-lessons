@@ -6,5 +6,5 @@
           android:layout_height="wrap_content"
           android:columnWidth="200dp"
           android:gravity="center"
-          android:numColumns="auto_fit"
+          android:numColumns="2"
           android:stretchMode="columnWidth"/>
