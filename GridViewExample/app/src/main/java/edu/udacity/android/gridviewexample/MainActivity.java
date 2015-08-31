@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
   private static final String[] values =
       {"A", "B", "C", "D", "E",
@@ -20,7 +23,16 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     GridView gridView = (GridView) findViewById(R.id.grid_view);
-    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.item_layout, R.id.text_view, values);
+    List<MovieInfo> itemList = new ArrayList<>();
+
+    for (String s : values) {
+      MovieInfo item = new MovieInfo();
+      item.setName(s);
+      item.setImageId(R.drawable.google_android);
+      itemList.add(item);
+    }
+
+    ArrayAdapter<MovieInfo> arrayAdapter = new CustomArrayAdapter(this, itemList);
     gridView.setAdapter(arrayAdapter);
   }
 }
