@@ -1,13 +1,14 @@
 package edu.udacity.android.gridviewexample2;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,9 +47,8 @@ public class CustomArrayAdapter extends ArrayAdapter<MovieInfo> {
 
     ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view);
     TextView textView = (TextView) convertView.findViewById(R.id.text_view);
-    Resources resources = context.getResources();
+    Picasso.with(context).load(item.getImageId()).resize(512, 512).into(imageView);
 
-    imageView.setImageDrawable(resources.getDrawable(item.getImageId()));
     textView.setText(item.getName());
     return convertView;
   }
