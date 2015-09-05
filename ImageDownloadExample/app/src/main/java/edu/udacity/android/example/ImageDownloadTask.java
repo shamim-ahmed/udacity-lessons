@@ -16,9 +16,11 @@ import edu.udacity.android.example.util.IOUtils;
 public class ImageDownloadTask extends AsyncTask<String, Void, Bitmap> {
     private static final String TAG = ImageDownloadTask.class.getSimpleName();
     private final ImageView imageView;
+    private final ImageDownloadApplication application;
 
-    public ImageDownloadTask(ImageView imageView) {
+    public ImageDownloadTask(ImageView imageView, ImageDownloadApplication application) {
         this.imageView = imageView;
+        this.application = application;
     }
 
     @Override
@@ -27,16 +29,23 @@ public class ImageDownloadTask extends AsyncTask<String, Void, Bitmap> {
             return null;
         }
 
+        String imageLocation = params[0];
+        Bitmap bitmap = application.getBitmapFromMemoryCache(imageLocation);
+
+        if (bitmap != null) {
+            return bitmap;
+        }
+
         InputStream inputStream = null;
-        Bitmap bitmap = null;
 
         try {
-            URL url = new URL(params[0]);
+            URL url = new URL(imageLocation);
             URLConnection connection = url.openConnection();
             inputStream = connection.getInputStream();
             bitmap = BitmapFactory.decodeStream(inputStream);
+            application.addBitmapToMemoryCache(imageLocation, bitmap);
         } catch (IOException ex) {
-            Log.e(TAG, "Error while downloading image");
+            Log.e(TAG, String.format("Error while downloading image %s", imageLocation));
         } finally {
             IOUtils.close(inputStream);
         }

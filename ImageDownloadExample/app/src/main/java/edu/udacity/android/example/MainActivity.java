@@ -1,21 +1,40 @@
 package edu.udacity.android.example;
 
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ImageDownloadApplication application = (ImageDownloadApplication) getApplication();
+        Resources resources = getResources();
 
-        ImageView imageView = (ImageView) findViewById(R.id.image_view);
-        ImageDownloadTask task = new ImageDownloadTask(imageView);
-        task.execute("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg");
+        try (InputStream inputStream = resources.openRawResource(R.raw.config)) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            String baseUrl = properties.getProperty("image.base.url");
+            String imagePath = "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
+            String imageLocation = baseUrl + imagePath;
+
+            ImageView imageView = (ImageView) findViewById(R.id.image_view);
+            ImageDownloadTask task = new ImageDownloadTask(imageView, application);
+            task.execute(imageLocation);
+        } catch (IOException ex) {
+            Log.e(TAG, "Error while rendering image", ex);
+        }
     }
 
     @Override
