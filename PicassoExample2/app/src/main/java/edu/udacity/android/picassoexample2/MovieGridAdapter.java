@@ -1,7 +1,6 @@
 package edu.udacity.android.picassoexample2;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,6 @@ public class MovieGridAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("shamim", "position " + position + " list " + movieList);
 
         if (position >= movieList.size()) {
             return null;
@@ -52,7 +50,6 @@ public class MovieGridAdapter extends ArrayAdapter<String> {
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view);
-        Log.i("shamim", "Am I here ??");
         Picasso.with(context).load(movie).into(imageView);
 
         return convertView;
