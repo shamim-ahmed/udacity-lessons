@@ -21,8 +21,12 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         GridView gridView = (GridView) view.findViewById(R.id.movie_grid);
 
+        MovieGridAdapter adapter = new MovieGridAdapter(getActivity().getApplicationContext());
+        gridView.setAdapter(adapter);
+
         MovieDataDownloadTask task = new MovieDataDownloadTask(getActivity().getApplicationContext(), gridView);
         task.execute();
+
         return view;
     }
 }
