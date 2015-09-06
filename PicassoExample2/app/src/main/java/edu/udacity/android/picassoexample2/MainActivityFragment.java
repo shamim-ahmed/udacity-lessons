@@ -6,12 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -27,9 +21,8 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         GridView gridView = (GridView) view.findViewById(R.id.movie_grid);
 
-        List<String> movieList = Arrays.asList("http://i.imgur.com/DvpvklR.png", "http://i.imgur.com/DvpvklR.png");
-        gridView.setAdapter(new MovieGridAdapter(getActivity().getApplicationContext(), movieList));
-
+        MovieDataDownloadTask task = new MovieDataDownloadTask(getActivity().getApplicationContext(), gridView);
+        task.execute();
         return view;
     }
 }
