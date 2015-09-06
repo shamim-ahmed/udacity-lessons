@@ -2,7 +2,7 @@ package edu.udacity.android.picassoexample2;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +10,11 @@ import java.util.List;
 public class MovieDataDownloadTask extends AsyncTask<String, String, List<String>> {
 
     private final Context context;
-    private final ListView listView;
+    private final GridView gridView;
 
-    public MovieDataDownloadTask(Context context, ListView listView) {
+    public MovieDataDownloadTask(Context context, GridView gridView) {
         this.context = context;
-        this.listView = listView;
+        this.gridView = gridView;
     }
 
     @Override
@@ -25,10 +25,10 @@ public class MovieDataDownloadTask extends AsyncTask<String, String, List<String
 
     @Override
     protected void onPostExecute(List<String> movieList) {
-        listView.invalidateViews();
+        gridView.invalidateViews();
 
         MovieGridAdapter adapter = new MovieGridAdapter(context);
         adapter.addAll(movieList);
-        listView.setAdapter(adapter);
+        gridView.setAdapter(adapter);
     }
 }
