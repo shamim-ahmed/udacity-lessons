@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
+import android.widget.ListView;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -19,9 +19,9 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        GridView gridView = (GridView) view.findViewById(R.id.movie_grid);
+        ListView listView = (ListView) view.findViewById(R.id.movie_list);
 
-        MovieDataDownloadTask task = new MovieDataDownloadTask(getActivity().getApplicationContext(), gridView);
+        MovieDataDownloadTask task = new MovieDataDownloadTask(getActivity().getApplicationContext(), listView);
         task.execute();
         return view;
     }

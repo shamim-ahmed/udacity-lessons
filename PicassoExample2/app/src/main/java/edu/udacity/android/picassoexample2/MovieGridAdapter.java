@@ -1,7 +1,6 @@
 package edu.udacity.android.picassoexample2;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ public class MovieGridAdapter extends ArrayAdapter<String> {
         super(context, R.layout.grid_item);
         this.context = context;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
