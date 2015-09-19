@@ -2,6 +2,7 @@ package edu.udacity.android.experiments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<String> arp = (ArrayAdapter<String>)((ListView) parent).getAdapter();
+                ArrayAdapter<String> arp = (ArrayAdapter<String>) ((ListView) parent).getAdapter();
                 String data = arp.getItem(position);
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("FORECAST_DATA", data);
@@ -60,12 +61,15 @@ public class MainActivity extends AppCompatActivity {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
-        }
-
-        if (id == R.id.refresh_settings) {
+        } else if (id == R.id.refresh_settings) {
             ListView listView = (ListView) findViewById(R.id.forecast_listView);
             fetchForecastData((ArrayAdapter<String>) listView.getAdapter());
             return true;
+        } else if (id == R.id.open_map_settings) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String location = preferences.getString("loction", "2122, au");
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + location));
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -76,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
         String[] values = location.split(",");
-        task.execute(values[0], values[1]);
+
+        if (values.length < 2) {
+            task.execute(values[0], "au");
+        } else {
+            task.execute(values[0], values[1]);
+        }
     }
 }

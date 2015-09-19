@@ -61,7 +61,7 @@ public class ForecastDownloadTask extends AsyncTask<String, Void, String[]> {
             Uri.Builder uriBuilder = new Uri.Builder();
             String zip = postCode + "," + country;
             uriBuilder.scheme("http").authority("api.openweathermap.org").appendPath("data").appendPath("2.5").appendPath("forecast").appendPath("daily");
-            uriBuilder.appendQueryParameter("zip", zip).appendQueryParameter("mode","json").appendQueryParameter("units", "metric").appendQueryParameter("cnts", "7");
+            uriBuilder.appendQueryParameter("zip", zip).appendQueryParameter("mode", "json").appendQueryParameter("units", "metric").appendQueryParameter("cnts", "7");
 
             String serviceLocation = uriBuilder.build().toString();
             Log.i(LOG_TAG, serviceLocation);

@@ -15,7 +15,7 @@ public class WeatherDataParser {
     /* The date/time conversion code is going to be moved outside the asynctask later,
          * so for convenience we're breaking it out into its own method now.
          */
-    private static String getReadableDateString(long time){
+    private static String getReadableDateString(long time) {
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
         SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
@@ -35,11 +35,11 @@ public class WeatherDataParser {
     }
 
     /**
-     * Take the String representing the complete forecast in JSON Format and
-     * pull out the data we need to construct the Strings needed for the wireframes.
+     * Take the String representing the complete forecast in JSON Format and pull out the data we
+     * need to construct the Strings needed for the wireframes.
      *
-     * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-     * into an Object hierarchy for us.
+     * Fortunately parsing is easy:  constructor takes the JSON string and converts it into an
+     * Object hierarchy for us.
      */
     public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
@@ -73,7 +73,7 @@ public class WeatherDataParser {
         dayTime = new Time();
 
         String[] resultStrs = new String[numDays];
-        for(int i = 0; i < weatherArray.length(); i++) {
+        for (int i = 0; i < weatherArray.length(); i++) {
             // For now, using the format "Day, description, hi/low"
             String day;
             String description;
@@ -87,7 +87,7 @@ public class WeatherDataParser {
             // "this saturday".
             long dateTime;
             // Cheating to convert this to UTC time, which is what we want anyhow
-            dateTime = dayTime.setJulianDay(julianStartDay+i);
+            dateTime = dayTime.setJulianDay(julianStartDay + i);
             day = getReadableDateString(dateTime);
 
             // description is in a child array called "weather", which is 1 element long.
