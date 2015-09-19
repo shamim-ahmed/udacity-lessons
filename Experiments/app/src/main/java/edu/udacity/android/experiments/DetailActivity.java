@@ -45,6 +45,7 @@ public class DetailActivity extends ActionBarActivity {
         MenuItem item = menu.findItem(R.id.share_forecast);
         ShareActionProvider provider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "weather data");
         shareIntent.putExtra(Intent.EXTRA_TEXT, forecast);
