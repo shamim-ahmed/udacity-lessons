@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+}
+
 android {
     compileSdkVersion 22
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "edu.udacity.android.gridviewexample2"
@@ -21,5 +25,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
 }
