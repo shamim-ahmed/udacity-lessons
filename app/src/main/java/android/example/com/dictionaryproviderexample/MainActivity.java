@@ -23,6 +23,8 @@ import android.provider.UserDictionary.Words;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 /**
  * This is the central activity for the Provider Dictionary Example App. The purpose of this app is
  * to show an example of accessing the {@link Words} list via its' Content Provider.
@@ -34,13 +36,24 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get the TextView which will be populated with the Dictionary ContentProvider data.
-        TextView dictTextView = (TextView) findViewById(R.id.dictionary_text_view);
-
         // Get the ContentResolver which will send a message to the ContentProvider
         ContentResolver resolver = getContentResolver();
 
         // Get a Cursor containing all of the rows in the Words table
-        Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, null, null, null, null);
+
+        StringBuilder resultBuilder = new StringBuilder();
+        String[] projection = {Words._ID, Words.WORD, Words.FREQUENCY, Words.LOCALE, Words.APP_ID};
+
+        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, null, null, null)) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(Words.WORD);
+                String word = cursor.getString(index);
+                resultBuilder.append(word).append("\n");
+            }
+        }
+
+
+        TextView textView = (TextView) findViewById(R.id.dictionary_text_view);
+        textView.setText(resultBuilder.toString());
     }
 }
