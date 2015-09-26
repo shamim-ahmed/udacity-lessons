@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Experiments</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="refresh_settings">Refresh</string>
+    <string name="forecast">Today - Sunny - 88/53</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_settings">Settings</string>
+    <string name="pref_location_label">Location</string>
+    <string name="pref_location_key">location</string>
+    <string name="pref_location_default">2122,au</string>
+
+    <string name="pref_tempUnit_key">tempUnit</string>
+    <string name="pref_tempUnit_default">1</string>
+    <string name="pref_tempUnit_title">Temperature Unit</string>
+</resources>
