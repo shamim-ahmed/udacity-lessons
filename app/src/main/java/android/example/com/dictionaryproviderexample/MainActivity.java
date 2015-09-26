@@ -42,16 +42,21 @@ public class MainActivity extends ActionBarActivity {
         // Get a Cursor containing all of the rows in the Words table
 
         StringBuilder resultBuilder = new StringBuilder();
-        String[] projection = {Words._ID, Words.WORD, Words.FREQUENCY, Words.LOCALE, Words.APP_ID};
-        String selection = String.format("%s = ?", Words.LOCALE);
-        String[] selectionArgs = {Locale.US.toString()};
-        String sortOrder = String.format("%s DESC", Words._ID);
 
-        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, selection, selectionArgs, sortOrder)) {
+        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, null, null, null, null)) {
+            int n = cursor.getCount();
+            resultBuilder.append("Number of words : ").append(n).append("\n");
+
             while (cursor.moveToNext()) {
-                int index = cursor.getColumnIndex(Words.WORD);
-                String word = cursor.getString(index);
-                resultBuilder.append(word).append("\n");
+                int idIndex = cursor.getColumnIndex(Words._ID);
+                int wordIndex = cursor.getColumnIndex(Words.WORD);
+                int frequencyIndex = cursor.getColumnIndex(Words.FREQUENCY);
+
+                int id = cursor.getInt(idIndex);
+                String word = cursor.getString(wordIndex);
+                int frequency = cursor.getInt(frequencyIndex);
+
+                resultBuilder.append(id).append(" ").append(word).append(" ").append(frequency).append("\n");
             }
         }
 
