@@ -37,27 +37,25 @@ public class MainActivity extends ActionBarActivity {
         // Get the ContentResolver which will send a message to the ContentProvider
         ContentResolver resolver = getContentResolver();
 
-        // Get a Cursor containing all of the rows in the Words table
-
         StringBuilder resultBuilder = new StringBuilder();
 
         try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, null, null, null, null)) {
             int n = cursor.getCount();
-            resultBuilder.append("Number of words : ").append(n).append("\n");
+            resultBuilder.append(String.format("The UserDictionary contains %d words%n", n));
+            resultBuilder.append("COLUMNS: _id - frequency - word\n");
 
             while (cursor.moveToNext()) {
                 int idIndex = cursor.getColumnIndex(Words._ID);
-                int wordIndex = cursor.getColumnIndex(Words.WORD);
                 int frequencyIndex = cursor.getColumnIndex(Words.FREQUENCY);
+                int wordIndex = cursor.getColumnIndex(Words.WORD);
 
                 int id = cursor.getInt(idIndex);
-                String word = cursor.getString(wordIndex);
                 int frequency = cursor.getInt(frequencyIndex);
+                String word = cursor.getString(wordIndex);
 
-                resultBuilder.append(id).append(" ").append(word).append(" ").append(frequency).append("\n");
+                resultBuilder.append(id).append(" - ").append(frequency).append(" - ").append(word).append("\n");
             }
         }
-
 
         TextView textView = (TextView) findViewById(R.id.dictionary_text_view);
         textView.setText(resultBuilder.toString());
