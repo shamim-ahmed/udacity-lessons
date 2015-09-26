@@ -43,8 +43,10 @@ public class MainActivity extends ActionBarActivity {
 
         StringBuilder resultBuilder = new StringBuilder();
         String[] projection = {Words._ID, Words.WORD, Words.FREQUENCY, Words.LOCALE, Words.APP_ID};
+        String selection = String.format("%s = ?", Words.LOCALE);
+        String[] selectionArgs = {Locale.US.toString()};
 
-        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, null, null, null)) {
+        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, selection, selectionArgs, null)) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(Words.WORD);
                 String word = cursor.getString(index);
