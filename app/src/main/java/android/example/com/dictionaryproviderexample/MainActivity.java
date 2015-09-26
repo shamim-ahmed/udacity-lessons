@@ -45,8 +45,9 @@ public class MainActivity extends ActionBarActivity {
         String[] projection = {Words._ID, Words.WORD, Words.FREQUENCY, Words.LOCALE, Words.APP_ID};
         String selection = String.format("%s = ?", Words.LOCALE);
         String[] selectionArgs = {Locale.US.toString()};
+        String sortOrder = String.format("%s DESC", Words._ID);
 
-        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, selection, selectionArgs, null)) {
+        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, selection, selectionArgs, sortOrder)) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(Words.WORD);
                 String word = cursor.getString(index);
