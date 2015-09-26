@@ -23,8 +23,6 @@ import android.provider.UserDictionary.Words;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 /**
  * This is the central activity for the Provider Dictionary Example App. The purpose of this app is
  * to show an example of accessing the {@link Words} list via its' Content Provider.
