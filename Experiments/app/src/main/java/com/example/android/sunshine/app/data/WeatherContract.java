@@ -19,6 +19,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
+import android.util.Log;
 
 /**
  * Defines table and column names for the weather database.
@@ -87,20 +88,38 @@ public class WeatherContract {
         public static final String COLUMN_DEGREES = "degrees";
         public static final String CONTENT_PATH = "weather";
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + WeatherEntry.CONTENT_PATH;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + WeatherEntry.CONTENT_PATH + "/" + LocationEntry.CONTENT_PATH + "/date";
+
 
         public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(CONTENT_PATH).build();
 
         public static String getLocationSettingFromUri(Uri uri) {
-            return null;
+            return uri.getLastPathSegment();
         }
 
         public static long getDateFromUri(Uri uri) {
-            return 0;
+            long result = 0;
+            String dateValue = uri.getLastPathSegment();
+
+            try {
+                result = Long.parseLong(dateValue);
+            } catch (Exception ex) {
+                Log.w(WeatherEntry.class.getSimpleName(), "error while parsing date from uri");
+            }
+
+            return result;
         }
 
         public static long getStartDateFromUri(Uri uri) {
-            return 0;
+            long result = 0;
+            String startDateValue = uri.getQueryParameter("date");
+
+            if (startDateValue != null) {
+                result = Long.parseLong(startDateValue);
+            }
+
+            return result;
         }
 
         public static Uri buildWeatherUri(long id) {
