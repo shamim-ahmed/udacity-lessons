@@ -23,6 +23,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
+
+import java.io.UnsupportedEncodingException;
 
 public class WeatherProvider extends ContentProvider {
 
@@ -104,7 +107,7 @@ public class WeatherProvider extends ContentProvider {
         return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sLocationSettingAndDaySelection,
-                new String[]{locationSetting, Long.toString(date)},
+                new String[]{locationSetting, Long.toString(WeatherContract.normalizeDate(date))},
                 null,
                 null,
                 sortOrder
@@ -270,17 +273,37 @@ public class WeatherProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Student: Start by getting a writable database
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         // Student: Use the uriMatcher to match the WEATHER and LOCATION URI's we are going to
         // handle.  If it doesn't match these, throw an UnsupportedOperationException.
+        int match = sUriMatcher.match(uri);
+        int result = 0;
+
+        switch (match) {
+            case WEATHER: {
+                result = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            case LOCATION: {
+                result = db.delete(WeatherContract.LocationEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("the uri " + uri + " is not supported");
+        }
 
         // Student: A null value deletes all rows.  In my implementation of this, I only notified
         // the uri listeners (using the content resolver) if the rowsDeleted != 0 or the selection
         // is null.
         // Oh, and you should notify the listeners here.
+        if (selection == null || result != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
 
+        db.close();
         // Student: return the actual rows deleted
-        return 0;
+        return result;
     }
 
     private void normalizeDate(ContentValues values) {
@@ -296,7 +319,29 @@ public class WeatherProvider extends ContentProvider {
             Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         // Student: This is a lot like the delete function.  We return the number of rows impacted
         // by the update.
-        return 0;
+        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
+        int result = 0;
+
+        switch (match) {
+            case WEATHER: {
+                result = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            }
+            case LOCATION: {
+                result = db.update(WeatherContract.LocationEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("The uri " + uri + " is not supported");
+        }
+
+        if (result != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        db.close();
+        return result;
     }
 
     @Override

@@ -21,6 +21,8 @@ import android.provider.BaseColumns;
 import android.text.format.Time;
 import android.util.Log;
 
+import java.util.List;
+
 /**
  * Defines table and column names for the weather database.
  */
@@ -98,17 +100,22 @@ public class WeatherContract {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(CONTENT_PATH).build();
 
         public static String getLocationSettingFromUri(Uri uri) {
-            return uri.getLastPathSegment();
+            List<String> segmentList = uri.getPathSegments();
+            String result = null;
+
+            if (segmentList.size() >= 2) {
+               result = segmentList.get(1);
+            }
+
+            return result;
         }
 
         public static long getDateFromUri(Uri uri) {
             long result = 0;
-            String dateValue = uri.getLastPathSegment();
+            List<String> segmentList = uri.getPathSegments();
 
-            try {
-                result = Long.parseLong(dateValue);
-            } catch (Exception ex) {
-                Log.w(WeatherEntry.class.getSimpleName(), "error while parsing date from uri");
+            if (segmentList.size() == 3) {
+                result = Long.parseLong(segmentList.get(2));
             }
 
             return result;
