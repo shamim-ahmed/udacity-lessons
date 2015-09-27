@@ -15,6 +15,8 @@
  */
 package com.example.android.sunshine.app.data;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
 
@@ -22,6 +24,7 @@ import android.text.format.Time;
  * Defines table and column names for the weather database.
  */
 public class WeatherContract {
+    public static final String CONTENT_AUTHORITY = "com.example.android.sunshine.app";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -44,6 +47,11 @@ public class WeatherContract {
         public static final String COLUMN_COORD_LAT = "lat" ;
         public static final String COLUMN_COORD_LONG = "long";
         public static final String COLUMN_LOCATION_SETTING = "loc_setting";
+        public static final String CONTENT_PATH = "location";
+        public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(CONTENT_PATH).build();
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + CONTENT_PATH;
+
     }
 
     /* Inner class that defines the table contents of the weather table */
@@ -77,5 +85,41 @@ public class WeatherContract {
 
         // Degrees are meteorological degrees (e.g, 0 is north, 180 is south).  Stored as floats.
         public static final String COLUMN_DEGREES = "degrees";
+        public static final String CONTENT_PATH = "weather";
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + WeatherEntry.CONTENT_PATH;
+
+        public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(CONTENT_PATH).build();
+
+        public static String getLocationSettingFromUri(Uri uri) {
+            return null;
+        }
+
+        public static long getDateFromUri(Uri uri) {
+            return 0;
+        }
+
+        public static long getStartDateFromUri(Uri uri) {
+            return 0;
+        }
+
+        public static Uri buildWeatherUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath(Long.toString(id)).build();
+        }
+
+        public static Uri buildWeatherLocation(String locationQuery) {
+            return CONTENT_URI.buildUpon().appendPath(locationQuery).build();
+        }
+
+        public static Uri buildWeatherLocationWithDate(String locationQuery, long testDate) {
+            return CONTENT_URI.buildUpon().appendPath(locationQuery).appendPath(Long.toString(normalizeDate(testDate))).build();
+        }
+
+        public static Uri buildWeatherLocationWithStartDate(String locationSetting, long l) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(locationSetting)
+                    .appendQueryParameter("date", Long.toString(normalizeDate(l)))
+                    .build();
+        }
     }
 }

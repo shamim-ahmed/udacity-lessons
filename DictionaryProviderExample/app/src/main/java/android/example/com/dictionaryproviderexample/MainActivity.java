@@ -21,9 +21,7 @@ import android.os.Bundle;
 import android.provider.UserDictionary;
 import android.provider.UserDictionary.Words;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.TextView;
-
-import java.util.Locale;
+import android.widget.ListView;
 
 /**
  * This is the central activity for the Provider Dictionary Example App. The purpose of this app is
@@ -38,22 +36,14 @@ public class MainActivity extends ActionBarActivity {
 
         // Get the ContentResolver which will send a message to the ContentProvider
         ContentResolver resolver = getContentResolver();
-
-        // Get a Cursor containing all of the rows in the Words table
-
-        StringBuilder resultBuilder = new StringBuilder();
-        String[] projection = {Words._ID, Words.WORD, Words.FREQUENCY, Words.LOCALE, Words.APP_ID};
-
-        try (Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, projection, null, null, null)) {
-            while (cursor.moveToNext()) {
-                int index = cursor.getColumnIndex(Words.WORD);
-                String word = cursor.getString(index);
-                resultBuilder.append(word).append("\n");
-            }
-        }
-
-
-        TextView textView = (TextView) findViewById(R.id.dictionary_text_view);
-        textView.setText(resultBuilder.toString());
+        ListView listView = (ListView) findViewById(R.id.dictionary_list_view);
+        Cursor cursor = resolver.query(UserDictionary.Words.CONTENT_URI, null, null, null, null);
+        MyCursorAdapter adapter = new MyCursorAdapter(this,
+                android.R.layout.two_line_list_item,
+                cursor,
+                new String[]{Words.WORD, Words.FREQUENCY},
+                new int[]{android.R.id.text1, android.R.id.text2},
+                0);
+        listView.setAdapter(adapter);
     }
 }

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">ImageDownloadExample</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="default_alt_text">Movie poster</string>
+</resources>
