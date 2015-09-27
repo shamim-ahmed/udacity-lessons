@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.android.sunshine.app.FetchWeatherTask;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchForecastData(ArrayAdapter<String> adapter) {
-        ForecastDownloadTask task = new ForecastDownloadTask(adapter);
+        FetchWeatherTask task = new FetchWeatherTask(this, adapter);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
         String[] values = location.split(",");
