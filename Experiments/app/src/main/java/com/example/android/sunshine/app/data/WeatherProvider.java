@@ -23,9 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
-
-import java.io.UnsupportedEncodingException;
 
 public class WeatherProvider extends ContentProvider {
 
