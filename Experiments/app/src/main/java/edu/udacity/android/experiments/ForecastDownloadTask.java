@@ -15,20 +15,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
-public class ForecastDownloadTask extends AsyncTask<String, Void, String[]> {
+public class ForecastDownloadTask extends AsyncTask<String, Void, Forecast[]> {
     private static final String LOG_TAG = ForecastDownloadTask.class.getSimpleName();
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<Forecast> adapter;
 
-    public ForecastDownloadTask(ArrayAdapter<String> adapter) {
+    public ForecastDownloadTask(CustomAdapter adapter) {
         this.adapter = adapter;
     }
 
     @Override
-    protected String[] doInBackground(String... params) {
+    protected Forecast[] doInBackground(String... params) {
         String result = readForecastData(params[0], params[1]);
         Log.i(LOG_TAG, result);
 
-        String[] forecasts = null;
+        Forecast[] forecasts = null;
 
         try {
             forecasts = WeatherDataParser.getWeatherDataFromJson(result, 7);
@@ -40,7 +40,7 @@ public class ForecastDownloadTask extends AsyncTask<String, Void, String[]> {
     }
 
     @Override
-    protected void onPostExecute(String[] forecasts) {
+    protected void onPostExecute(Forecast[] forecasts) {
         adapter.clear();
         adapter.addAll(Arrays.asList(forecasts));
     }

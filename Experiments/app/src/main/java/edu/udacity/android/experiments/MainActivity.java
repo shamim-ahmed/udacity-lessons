@@ -10,11 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -25,16 +22,16 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
         ListView listView = (ListView) rootLayout.findViewById(R.id.forecast_listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.list_item, R.id.forecast_textView, new ArrayList<String>());
+        CustomAdapter adapter = new CustomAdapter(this);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<String> arp = (ArrayAdapter<String>) ((ListView) parent).getAdapter();
-                String data = arp.getItem(position);
+                CustomAdapter arp = (CustomAdapter) ((ListView) parent).getAdapter();
+                Forecast data = arp.getItem(position);
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("FORECAST_DATA", data);
+                intent.putExtra("FORECAST_DATA", data.toString());
                 startActivity(intent);
                 //Toast.makeText(parent.getContext(), data, Toast.LENGTH_LONG).show();
             }
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.refresh_settings) {
             ListView listView = (ListView) findViewById(R.id.forecast_listView);
-            fetchForecastData((ArrayAdapter<String>) listView.getAdapter());
+            fetchForecastData((CustomAdapter) listView.getAdapter());
             return true;
         } else if (id == R.id.open_map_settings) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fetchForecastData(ArrayAdapter<String> adapter) {
+    private void fetchForecastData(CustomAdapter adapter) {
         ForecastDownloadTask task = new ForecastDownloadTask(adapter);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));

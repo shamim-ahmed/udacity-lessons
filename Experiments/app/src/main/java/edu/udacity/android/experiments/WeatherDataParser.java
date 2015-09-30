@@ -41,7 +41,7 @@ public class WeatherDataParser {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it into an
      * Object hierarchy for us.
      */
-    public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+    public static Forecast[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -72,7 +72,7 @@ public class WeatherDataParser {
         // now we work exclusively in UTC
         dayTime = new Time();
 
-        String[] resultStrs = new String[numDays];
+        Forecast[] resultArray = new Forecast[numDays];
         for (int i = 0; i < weatherArray.length(); i++) {
             // For now, using the format "Day, description, hi/low"
             String day;
@@ -101,13 +101,18 @@ public class WeatherDataParser {
             double low = temperatureObject.getDouble(OWM_MIN);
 
             highAndLow = formatHighLows(high, low);
-            resultStrs[i] = day + " - " + description + " - " + highAndLow;
+            Forecast forecast = new Forecast();
+            forecast.setDay(day);
+            forecast.setDescription(description);
+            forecast.setMaximumTemparature(high);
+            forecast.setMinimumTemparature(low);
+            resultArray[i] = forecast;
         }
 
-        for (String s : resultStrs) {
-            Log.v(LOG_TAG, "Forecast entry: " + s);
+        for (Forecast f : resultArray) {
+            Log.v(LOG_TAG, "Forecast entry: " + f);
         }
-        return resultStrs;
+        return resultArray;
 
     }
 }
