@@ -14,8 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.example.android.sunshine.app.FetchWeatherTask;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
