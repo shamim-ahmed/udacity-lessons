@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchForecastData(ArrayAdapter<String> adapter) {
-        FetchWeatherTask task = new FetchWeatherTask(this, adapter);
+        ForecastDownloadTask task = new ForecastDownloadTask(adapter);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
         String[] values = location.split(",");
