@@ -17,13 +17,15 @@ import android.os.Message;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class ForecastWatchFaceService extends CanvasWatchFaceService {
+public class CustomWatchFaceService extends CanvasWatchFaceService {
+    private static final String TAG = CustomWatchFaceService.class.getSimpleName();
 
     @Override
     public Engine onCreateEngine() {
@@ -85,7 +87,7 @@ public class ForecastWatchFaceService extends CanvasWatchFaceService {
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
 
-            setWatchFaceStyle( new WatchFaceStyle.Builder( ForecastWatchFaceService.this )
+            setWatchFaceStyle( new WatchFaceStyle.Builder( CustomWatchFaceService.this )
                             .setBackgroundVisibility( WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE )
                             .setCardPeekMode( WatchFaceStyle.PEEK_MODE_VARIABLE )
                             .setShowSystemUiTime( false )
@@ -113,7 +115,7 @@ public class ForecastWatchFaceService extends CanvasWatchFaceService {
                 if( !mHasTimeZoneReceiverBeenRegistered ) {
 
                     IntentFilter filter = new IntentFilter( Intent.ACTION_TIMEZONE_CHANGED );
-                    ForecastWatchFaceService.this.registerReceiver( mTimeZoneBroadcastReceiver, filter );
+                    CustomWatchFaceService.this.registerReceiver( mTimeZoneBroadcastReceiver, filter );
 
                     mHasTimeZoneReceiverBeenRegistered = true;
                 }
@@ -122,7 +124,7 @@ public class ForecastWatchFaceService extends CanvasWatchFaceService {
                 mDisplayTime.setToNow();
             } else {
                 if( mHasTimeZoneReceiverBeenRegistered ) {
-                    ForecastWatchFaceService.this.unregisterReceiver( mTimeZoneBroadcastReceiver );
+                    CustomWatchFaceService.this.unregisterReceiver( mTimeZoneBroadcastReceiver );
                     mHasTimeZoneReceiverBeenRegistered = false;
                 }
             }
@@ -213,7 +215,15 @@ public class ForecastWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void drawIcon(Canvas canvas, Rect bounds) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sun);
+            CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();
+            Bitmap bitmap = application.getIconBitmap();
+
+            if (bitmap == null) {
+                Log.i(TAG, "no icon found");
+                return;
+            }
+
+            Log.i(TAG, "drawing the icon");
             Rect rect = new Rect();
             rect.set(bounds.centerX(), bounds.centerY(), bounds.centerX() + 50, bounds.centerY() + 50);
             canvas.drawBitmap(bitmap, null, rect, mGraphicsPaint);

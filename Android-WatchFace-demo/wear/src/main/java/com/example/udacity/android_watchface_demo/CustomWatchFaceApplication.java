@@ -8,8 +8,8 @@ import android.util.Log;
 /**
  * Created by shamim on 5/15/16.
  */
-public class ForecastWatchFaceApplication extends Application {
-    private static final String TAG = ForecastWatchFaceApplication.class.getSimpleName();
+public class CustomWatchFaceApplication extends Application {
+    private static final String TAG = CustomWatchFaceApplication.class.getSimpleName();
 
     private Bitmap iconBitmap;
 
@@ -25,6 +25,6 @@ public class ForecastWatchFaceApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "application created");
-        startService(new Intent(this, ForecastDataListenerService.class));
+        startService(new Intent(this, DataLayerListenerService.class));
     }
 }

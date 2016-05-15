@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by shamim on 5/15/16.
  */
-public class ForecastDataListenerService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks,
+public class DataLayerListenerService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MainActivity";
     private static final String FORECAST_PATH = "/forecast";
@@ -42,7 +42,7 @@ public class ForecastDataListenerService extends WearableListenerService impleme
                 .build();
         mGoogleApiClient.connect();
 
-        Log.i(TAG, "ForecastDataListenerService initialized successfully");
+        Log.i(TAG, "DataLayerListenerService initialized successfully");
     }
 
     @Override
@@ -86,6 +86,10 @@ public class ForecastDataListenerService extends WearableListenerService impleme
 
                     Asset asset = dataMapItem.getDataMap().getAsset("icon");
                     Log.i(TAG, "the asset received is : " + asset);
+
+                    CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();
+                    LoadBitmapAsyncTask task = new LoadBitmapAsyncTask(application, mGoogleApiClient);
+                    task.execute(asset);
                 } else {
                     Log.i(TAG, "Unrecognized path: " + path);
                 }
