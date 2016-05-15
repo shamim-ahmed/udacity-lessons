@@ -42,7 +42,7 @@ public class ForecastDataListenerService extends WearableListenerService impleme
                 .build();
         mGoogleApiClient.connect();
 
-        Log.i(TAG, "data listener service created !!!!!");
+        Log.i(TAG, "ForecastDataListenerService initialized successfully");
     }
 
     @Override
@@ -110,5 +110,4 @@ public class ForecastDataListenerService extends WearableListenerService impleme
 
         return resultMap;
     }
-
 }
