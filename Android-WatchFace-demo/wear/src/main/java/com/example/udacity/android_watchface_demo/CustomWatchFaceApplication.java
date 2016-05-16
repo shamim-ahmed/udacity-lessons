@@ -42,7 +42,6 @@ public class CustomWatchFaceApplication extends Application {
         forecastDataMap = new HashMap<>();
         forecastDataMap.put(WearableConstants.TEMPERATURE_HIGH_KEY, "23");
         forecastDataMap.put(WearableConstants.TEMPERATURE_LOW_KEY, "15");
-        forecastDataMap.put(WearableConstants.ICON_BITMAP_KEY, "null");
         forecastDataMap.put(WearableConstants.ICON_BITMAP_KEY, bitmap);
     }
 }

@@ -54,8 +54,8 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         private float mXOffset;
         private float mYOffset;
 
-        private int mBackgroundColor = Color.parseColor("black");
-        private int mTextColor = Color.parseColor("red");
+        private int mBackgroundColor = Color.parseColor("#0000ff");
+        private int mTextColor = Color.parseColor("#ffffff");
 
         final BroadcastReceiver mTimeZoneBroadcastReceiver = new BroadcastReceiver() {
             @Override
