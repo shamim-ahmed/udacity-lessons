@@ -74,7 +74,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
                         if (isVisible() && !isInAmbientMode()) {
                             long currentTimeMillis = System.currentTimeMillis();
                             long delay = mUpdateRateMs - (currentTimeMillis % mUpdateRateMs);
-                            mTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME_ID, delay);
+                            sendEmptyMessageDelayed(MSG_UPDATE_TIME_ID, delay);
                         }
                         break;
                     }

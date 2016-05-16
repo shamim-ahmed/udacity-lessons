@@ -2,10 +2,8 @@ package com.example.udacity.android_watchface_demo;
 
 import android.app.Application;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
