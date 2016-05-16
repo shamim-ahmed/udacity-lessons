@@ -45,10 +45,10 @@ public class SendDataTask extends AsyncTask<Void, Void, Void> {
         JSONObject forecastData = new JSONObject();
 
         try {
-            forecastData.put("timestamp", Long.toString(new Date().getTime()));
-            forecastData.put("summary", "sunny");
-            forecastData.put("temperature", "15 celsius");
-            forecastData.put("humidity", "75%");
+            forecastData.put(MobileConstants.TIMESTAMP_KEY, Long.toString(new Date().getTime()));
+            forecastData.put(MobileConstants.TEMPERATURE_HIGH_KEY, "23");
+            forecastData.put(MobileConstants.TEMPERATURE_LOW_KEY, "15");
+
         } catch (Exception ex) {
             Log.e(TAG, "error while constructing json string", ex);
         }
@@ -59,7 +59,7 @@ public class SendDataTask extends AsyncTask<Void, Void, Void> {
         Asset iconAsset = toAsset(mBitmap);
 
         if (iconAsset != null) {
-            dataMap.putAsset("icon", iconAsset);
+            dataMap.putAsset(MobileConstants.ICON_BITMAP_KEY, iconAsset);
         }
 
         PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();

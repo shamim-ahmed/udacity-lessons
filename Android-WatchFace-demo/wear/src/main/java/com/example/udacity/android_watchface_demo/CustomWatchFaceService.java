@@ -216,7 +216,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         private void drawIcon(Canvas canvas, Rect bounds) {
             CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();
             Map<String, Object> forecastDataMap = application.getForecastDataMap();
-            Bitmap bitmap = (Bitmap) forecastDataMap.get(Constants.ICON_BITMAP_KEY);
+            Bitmap bitmap = (Bitmap) forecastDataMap.get(WearableConstants.ICON_BITMAP_KEY);
 
             if (bitmap == null) {
                 Log.i(TAG, "no icon found");

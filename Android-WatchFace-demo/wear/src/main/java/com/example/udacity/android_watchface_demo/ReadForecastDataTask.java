@@ -62,7 +62,7 @@ public class ReadForecastDataTask extends AsyncTask<DataMapItem, Void, Map<Strin
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
 
         if (bitmap != null) {
-            forecastMap.put(Constants.ICON_BITMAP_KEY, bitmap);
+            forecastMap.put(WearableConstants.ICON_BITMAP_KEY, bitmap);
         }
 
         return forecastMap;
@@ -80,9 +80,8 @@ public class ReadForecastDataTask extends AsyncTask<DataMapItem, Void, Map<Strin
         try {
             JSONObject jsonObject = new JSONObject(inputStr);
 
-            resultMap.put(Constants.SUMMARY_KEY, jsonObject.getString(Constants.SUMMARY_KEY));
-            resultMap.put(Constants.TEMPERATURE_KEY, jsonObject.getString(Constants.TEMPERATURE_KEY));
-            resultMap.put(Constants.HUMIDITY_KEY, jsonObject.getString(Constants.HUMIDITY_KEY));
+            resultMap.put(WearableConstants.TEMPERATURE_HIGH_KEY, jsonObject.getString(WearableConstants.TEMPERATURE_HIGH_KEY));
+            resultMap.put(WearableConstants.TEMPERATURE_LOW_KEY, jsonObject.getString(WearableConstants.TEMPERATURE_LOW_KEY));
         } catch (Exception ex) {
             Log.e(TAG, "error while parsing json string");
         }
