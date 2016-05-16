@@ -5,20 +5,23 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * Created by shamim on 5/15/16.
  */
 public class CustomWatchFaceApplication extends Application {
     private static final String TAG = CustomWatchFaceApplication.class.getSimpleName();
+    private Map<String, Object> forecastDataMap = Collections.emptyMap();
 
-    private Bitmap iconBitmap;
-
-    public Bitmap getIconBitmap() {
-        return iconBitmap;
+    public synchronized Map<String, Object> getForecastDataMap() {
+        return forecastDataMap;
     }
 
-    public void setIconBitMap(Bitmap iconBitMap) {
-        this.iconBitmap = iconBitMap;
+    public synchronized void setForecastDataMap(Map<String, Object> forecastDataMap) {
+        this.forecastDataMap = forecastDataMap;
     }
 
     @Override

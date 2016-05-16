@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,6 +20,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +60,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         final BroadcastReceiver mTimeZoneBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                mDisplayTime.clear( intent.getStringExtra( "time-zone" ) );
+                mDisplayTime.clear(intent.getStringExtra("time-zone"));
                 mDisplayTime.setToNow();
             }
         };
@@ -68,13 +68,13 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         private final Handler mTimeHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch( msg.what ) {
+                switch (msg.what) {
                     case MSG_UPDATE_TIME_ID: {
                         invalidate();
-                        if( isVisible() && !isInAmbientMode() ) {
+                        if (isVisible() && !isInAmbientMode()) {
                             long currentTimeMillis = System.currentTimeMillis();
-                            long delay = mUpdateRateMs - ( currentTimeMillis % mUpdateRateMs );
-                            mTimeHandler.sendEmptyMessageDelayed( MSG_UPDATE_TIME_ID, delay );
+                            long delay = mUpdateRateMs - (currentTimeMillis % mUpdateRateMs);
+                            mTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME_ID, delay);
                         }
                         break;
                     }
@@ -87,10 +87,10 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
 
-            setWatchFaceStyle( new WatchFaceStyle.Builder( CustomWatchFaceService.this )
-                            .setBackgroundVisibility( WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE )
-                            .setCardPeekMode( WatchFaceStyle.PEEK_MODE_VARIABLE )
-                            .setShowSystemUiTime( false )
+            setWatchFaceStyle(new WatchFaceStyle.Builder(CustomWatchFaceService.this)
+                            .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                            .setCardPeekMode(WatchFaceStyle.PEEK_MODE_VARIABLE)
+                            .setShowSystemUiTime(false)
                             .build()
             );
 
@@ -108,23 +108,23 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
-        public void onVisibilityChanged( boolean visible ) {
+        public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
 
-            if( visible ) {
-                if( !mHasTimeZoneReceiverBeenRegistered ) {
+            if (visible) {
+                if (!mHasTimeZoneReceiverBeenRegistered) {
 
-                    IntentFilter filter = new IntentFilter( Intent.ACTION_TIMEZONE_CHANGED );
-                    CustomWatchFaceService.this.registerReceiver( mTimeZoneBroadcastReceiver, filter );
+                    IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
+                    CustomWatchFaceService.this.registerReceiver(mTimeZoneBroadcastReceiver, filter);
 
                     mHasTimeZoneReceiverBeenRegistered = true;
                 }
 
-                mDisplayTime.clear( TimeZone.getDefault().getID() );
+                mDisplayTime.clear(TimeZone.getDefault().getID());
                 mDisplayTime.setToNow();
             } else {
-                if( mHasTimeZoneReceiverBeenRegistered ) {
-                    CustomWatchFaceService.this.unregisterReceiver( mTimeZoneBroadcastReceiver );
+                if (mHasTimeZoneReceiverBeenRegistered) {
+                    CustomWatchFaceService.this.unregisterReceiver(mTimeZoneBroadcastReceiver);
                     mHasTimeZoneReceiverBeenRegistered = false;
                 }
             }
@@ -136,12 +136,12 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         public void onApplyWindowInsets(WindowInsets insets) {
             super.onApplyWindowInsets(insets);
 
-            mYOffset = getResources().getDimension( R.dimen.y_offset );
+            mYOffset = getResources().getDimension(R.dimen.y_offset);
 
-            if( insets.isRound() ) {
-                mXOffset = getResources().getDimension( R.dimen.x_offset_round );
+            if (insets.isRound()) {
+                mXOffset = getResources().getDimension(R.dimen.x_offset_round);
             } else {
-                mXOffset = getResources().getDimension( R.dimen.x_offset_square );
+                mXOffset = getResources().getDimension(R.dimen.x_offset_square);
             }
         }
 
@@ -149,7 +149,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         public void onPropertiesChanged(Bundle properties) {
             super.onPropertiesChanged(properties);
 
-            if( properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false) ) {
+            if (properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false)) {
                 mIsLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
             }
         }
@@ -165,14 +165,14 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
 
-            if( inAmbientMode ) {
-                mTextColorPaint.setColor( Color.parseColor("white") );
+            if (inAmbientMode) {
+                mTextColorPaint.setColor(Color.parseColor("white"));
             } else {
-                mTextColorPaint.setColor( Color.parseColor("red") );
+                mTextColorPaint.setColor(Color.parseColor("red"));
             }
 
-            if( mIsLowBitAmbient ) {
-                mTextColorPaint.setAntiAlias( !inAmbientMode );
+            if (mIsLowBitAmbient) {
+                mTextColorPaint.setAntiAlias(!inAmbientMode);
             }
 
             invalidate();
@@ -183,20 +183,19 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         public void onInterruptionFilterChanged(int interruptionFilter) {
             super.onInterruptionFilterChanged(interruptionFilter);
 
-            boolean isDeviceMuted = ( interruptionFilter == android.support.wearable.watchface.WatchFaceService.INTERRUPTION_FILTER_NONE );
-            if( isDeviceMuted ) {
-                mUpdateRateMs = TimeUnit.MINUTES.toMillis( 1 );
+            boolean isDeviceMuted = (interruptionFilter == android.support.wearable.watchface.WatchFaceService.INTERRUPTION_FILTER_NONE);
+            if (isDeviceMuted) {
+                mUpdateRateMs = TimeUnit.MINUTES.toMillis(1);
 
             } else {
                 mUpdateRateMs = DEFAULT_UPDATE_RATE_MS;
             }
 
-            if( mIsInMuteMode != isDeviceMuted ) {
+            if (mIsInMuteMode != isDeviceMuted) {
                 mIsInMuteMode = isDeviceMuted;
-                int alpha = ( isDeviceMuted ) ? 100 : 255;
-                mTextColorPaint.setAlpha( alpha );
+                int alpha = (isDeviceMuted) ? 100 : 255;
+                mTextColorPaint.setAlpha(alpha);
                 invalidate();
-
             }
 
             updateTimer();
@@ -216,7 +215,8 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
         private void drawIcon(Canvas canvas, Rect bounds) {
             CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();
-            Bitmap bitmap = application.getIconBitmap();
+            Map<String, Object> forecastDataMap = application.getForecastDataMap();
+            Bitmap bitmap = (Bitmap) forecastDataMap.get(Constants.ICON_BITMAP_KEY);
 
             if (bitmap == null) {
                 Log.i(TAG, "no icon found");
@@ -237,42 +237,42 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
         private void initDisplayText() {
             mTextColorPaint = new Paint();
-            mTextColorPaint.setColor( mTextColor );
-            mTextColorPaint.setTypeface( WATCH_TEXT_TYPEFACE );
-            mTextColorPaint.setAntiAlias( true );
+            mTextColorPaint.setColor(mTextColor);
+            mTextColorPaint.setTypeface(WATCH_TEXT_TYPEFACE);
+            mTextColorPaint.setAntiAlias(true);
             mTextColorPaint.setTextSize(getResources().getDimension(R.dimen.text_size));
         }
 
         private void initGraphics() {
             mGraphicsPaint = new Paint();
-            mGraphicsPaint.setAntiAlias( true );
+            mGraphicsPaint.setAntiAlias(true);
         }
 
         private void updateTimer() {
-            mTimeHandler.removeMessages( MSG_UPDATE_TIME_ID );
-            if( isVisible() && !isInAmbientMode() ) {
-                mTimeHandler.sendEmptyMessage( MSG_UPDATE_TIME_ID );
+            mTimeHandler.removeMessages(MSG_UPDATE_TIME_ID);
+            if (isVisible() && !isInAmbientMode()) {
+                mTimeHandler.sendEmptyMessage(MSG_UPDATE_TIME_ID);
             }
         }
 
-        private void drawBackground( Canvas canvas, Rect bounds ) {
-            canvas.drawRect( 0, 0, bounds.width(), bounds.height(), mBackgroundColorPaint );
+        private void drawBackground(Canvas canvas, Rect bounds) {
+            canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundColorPaint);
         }
 
-        private void drawTimeText( Canvas canvas ) {
+        private void drawTimeText(Canvas canvas) {
             String timeText = getHourString() + ":" + String.format("%02d", mDisplayTime.minute);
-            if( isInAmbientMode() || mIsInMuteMode ) {
-                timeText += ( mDisplayTime.hour < 12 ) ? "AM" : "PM";
+            if (isInAmbientMode() || mIsInMuteMode) {
+                timeText += (mDisplayTime.hour < 12) ? "AM" : "PM";
             } else {
                 timeText += String.format(":%02d", mDisplayTime.second);
             }
-            canvas.drawText( timeText, mXOffset, mYOffset, mTextColorPaint );
+            canvas.drawText(timeText, mXOffset, mYOffset, mTextColorPaint);
         }
 
         private String getHourString() {
-            if( mDisplayTime.hour % 12 == 0 )
+            if (mDisplayTime.hour % 12 == 0)
                 return "12";
-            else if( mDisplayTime.hour <= 12 )
+            else if (mDisplayTime.hour <= 12)
                 return String.valueOf(mDisplayTime.hour);
             else
                 return String.valueOf(mDisplayTime.hour - 12);
