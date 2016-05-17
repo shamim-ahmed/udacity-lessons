@@ -260,23 +260,8 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void drawTimeText(Canvas canvas) {
-            String timeText = getHourString() + ":" + String.format("%02d", mDisplayTime.minute);
-            if (isInAmbientMode() || mIsInMuteMode) {
-                timeText += (mDisplayTime.hour < 12) ? "AM" : "PM";
-            } else {
-                timeText += String.format(":%02d", mDisplayTime.second);
-            }
+            String timeText = mDisplayTime.hour + ":" + String.format("%02d", mDisplayTime.minute);
             canvas.drawText(timeText, mXOffset, mYOffset, mTextColorPaint);
         }
-
-        private String getHourString() {
-            if (mDisplayTime.hour % 12 == 0)
-                return "12";
-            else if (mDisplayTime.hour <= 12)
-                return String.valueOf(mDisplayTime.hour);
-            else
-                return String.valueOf(mDisplayTime.hour - 12);
-        }
     }
-
 }
