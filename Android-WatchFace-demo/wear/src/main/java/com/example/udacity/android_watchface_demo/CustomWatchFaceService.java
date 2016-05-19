@@ -212,26 +212,28 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             drawBackground(canvas, bounds);
             drawTimeText(canvas);
 
-            drawIcon(canvas, bounds);
+            displayForecastInfo(canvas, bounds);
         }
 
-        private void drawIcon(Canvas canvas, Rect bounds) {
+        private void displayForecastInfo(Canvas canvas, Rect bounds) {
             CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();
             Map<String, Object> forecastDataMap = application.getForecastDataMap();
             Bitmap bitmap = (Bitmap) forecastDataMap.get(WearableConstants.ICON_BITMAP_KEY);
+            String highTempStr = (String) forecastDataMap.get(WearableConstants.TEMPERATURE_HIGH_KEY);
+            String lowTempStr = (String) forecastDataMap.get(WearableConstants.TEMPERATURE_LOW_KEY);
 
             if (bitmap == null) {
+                // TODO draw a default icon
                 Log.i(TAG, "no icon found");
-                return;
+            } else {
+                Log.i(TAG, "drawing the icon");
+                Rect rect = new Rect();
+                int x = (int) mXOffset;
+                int y = (int) mYOffset + 50;
+
+                rect.set(x, y, x + 40, y + 40);
+                canvas.drawBitmap(bitmap, null, rect, mGraphicsPaint);
             }
-
-            Log.i(TAG, "drawing the icon");
-            Rect rect = new Rect();
-            int x = (int) mXOffset - 25;
-            int y = (int) mYOffset + 20;
-
-            rect.set(x, y, x + 40, y + 40);
-            canvas.drawBitmap(bitmap, null, rect, mGraphicsPaint);
         }
 
         //Utility methods
@@ -272,7 +274,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             String timeText = mDisplayTime.hour + ":" + String.format("%02d", mDisplayTime.minute);
             String dateText = DateFormatUtil.generateDateString();
             canvas.drawText(timeText, mXOffset, mYOffset, mTimePaint);
-            canvas.drawText(dateText, mXOffset + 20, mYOffset + 45, mDatePaint);
+            canvas.drawText(dateText, mXOffset, mYOffset + 35, mDatePaint);
         }
     }
 }
