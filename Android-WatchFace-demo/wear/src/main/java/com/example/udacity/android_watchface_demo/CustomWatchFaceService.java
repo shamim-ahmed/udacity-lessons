@@ -274,7 +274,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             String timeText = mDisplayTime.hour + ":" + String.format("%02d", mDisplayTime.minute);
             String dateText = DateFormatUtil.generateDateString();
             canvas.drawText(timeText, mXOffset, mYOffset, mTimePaint);
-            canvas.drawText(dateText, mXOffset, mYOffset + 35, mDatePaint);
+            canvas.drawText(dateText, mXOffset - 2, mYOffset + 35, mDatePaint);
         }
     }
 }
