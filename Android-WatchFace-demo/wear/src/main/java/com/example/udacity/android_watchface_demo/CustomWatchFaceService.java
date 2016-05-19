@@ -44,7 +44,8 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         private Time mDisplayTime;
 
         private Paint mBackgroundColorPaint;
-        private Paint mTextColorPaint;
+        private Paint mTimePaint;
+        private Paint mDatePaint;
         private Paint mGraphicsPaint;
 
         private boolean mHasTimeZoneReceiverBeenRegistered = false;
@@ -95,8 +96,9 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             );
 
             initBackground();
-            initDisplayText();
-            initGraphics();
+            mTimePaint = createTextPaint(Color.WHITE, R.dimen.time_text_size);
+            mDatePaint = createTextPaint(Color.WHITE, R.dimen.date_text_size);
+            mGraphicsPaint = createGraphicsPaint();
 
             mDisplayTime = new Time();
         }
@@ -166,13 +168,13 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             super.onAmbientModeChanged(inAmbientMode);
 
             if (inAmbientMode) {
-                mTextColorPaint.setColor(Color.parseColor("white"));
+                mTimePaint.setColor(Color.parseColor("white"));
             } else {
-                mTextColorPaint.setColor(Color.parseColor("red"));
+                mTimePaint.setColor(Color.parseColor("red"));
             }
 
             if (mIsLowBitAmbient) {
-                mTextColorPaint.setAntiAlias(!inAmbientMode);
+                mTimePaint.setAntiAlias(!inAmbientMode);
             }
 
             invalidate();
@@ -194,7 +196,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             if (mIsInMuteMode != isDeviceMuted) {
                 mIsInMuteMode = isDeviceMuted;
                 int alpha = (isDeviceMuted) ? 100 : 255;
-                mTextColorPaint.setAlpha(alpha);
+                mTimePaint.setAlpha(alpha);
                 invalidate();
             }
 
@@ -225,7 +227,10 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
             Log.i(TAG, "drawing the icon");
             Rect rect = new Rect();
-            rect.set(bounds.centerX(), bounds.centerY(), bounds.centerX() + 50, bounds.centerY() + 50);
+            int x = (int) mXOffset - 25;
+            int y = (int) mYOffset + 20;
+
+            rect.set(x, y, x + 40, y + 40);
             canvas.drawBitmap(bitmap, null, rect, mGraphicsPaint);
         }
 
@@ -235,17 +240,21 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             mBackgroundColorPaint.setColor(mBackgroundColor);
         }
 
-        private void initDisplayText() {
-            mTextColorPaint = new Paint();
-            mTextColorPaint.setColor(mTextColor);
-            mTextColorPaint.setTypeface(WATCH_TEXT_TYPEFACE);
-            mTextColorPaint.setAntiAlias(true);
-            mTextColorPaint.setTextSize(getResources().getDimension(R.dimen.text_size));
+        private Paint createTextPaint(int textColor, int dimension) {
+            Paint paint = new Paint();
+            paint.setColor(textColor);
+            paint.setTypeface(WATCH_TEXT_TYPEFACE);
+            paint.setAntiAlias(true);
+            paint.setTextSize(getResources().getDimension(dimension));
+
+            return paint;
         }
 
-        private void initGraphics() {
-            mGraphicsPaint = new Paint();
-            mGraphicsPaint.setAntiAlias(true);
+        private Paint createGraphicsPaint() {
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+
+            return paint;
         }
 
         private void updateTimer() {
@@ -261,7 +270,9 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
         private void drawTimeText(Canvas canvas) {
             String timeText = mDisplayTime.hour + ":" + String.format("%02d", mDisplayTime.minute);
-            canvas.drawText(timeText, mXOffset, mYOffset, mTextColorPaint);
+            String dateText = DateFormatUtil.generateDateString();
+            canvas.drawText(timeText, mXOffset, mYOffset, mTimePaint);
+            canvas.drawText(dateText, mXOffset + 20, mYOffset + 45, mDatePaint);
         }
     }
 }
