@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public class DateFormatUtil {
     public static String generateDateString() {
-        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy", Locale.US);
         return dateFormat.format(new Date()).toUpperCase();
     }
 
