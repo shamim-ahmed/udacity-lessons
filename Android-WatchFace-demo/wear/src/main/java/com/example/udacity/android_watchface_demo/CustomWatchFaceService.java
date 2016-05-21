@@ -47,6 +47,8 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         private Paint mTimePaint;
         private Paint mDatePaint;
         private Paint mGraphicsPaint;
+        private Paint mHighTemperaturePaint;
+        private Paint mLowTemperaturePaint;
 
         private boolean mHasTimeZoneReceiverBeenRegistered = false;
         private boolean mIsInMuteMode;
@@ -55,8 +57,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
         private float mXOffset;
         private float mYOffset;
 
-        private int mBackgroundColor = Color.parseColor("#0000ff");
-        private int mTextColor = Color.parseColor("#ffffff");
+        private int mBackgroundColor = Color.parseColor("#0098F8");
 
         final BroadcastReceiver mTimeZoneBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -97,7 +98,9 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
             initBackground();
             mTimePaint = createTextPaint(Color.WHITE, R.dimen.time_text_size);
-            mDatePaint = createTextPaint(Color.WHITE, R.dimen.date_text_size);
+            mDatePaint = createTextPaint(Color.parseColor("#7DCBFC"), R.dimen.date_text_size);
+            mHighTemperaturePaint = createTextPaint(Color.WHITE, R.dimen.temperature_text_size);
+            mLowTemperaturePaint = createTextPaint(Color.parseColor("#A4DBFD"), R.dimen.temperature_text_size);
             mGraphicsPaint = createGraphicsPaint();
 
             mDisplayTime = new Time();
@@ -226,6 +229,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
                 // TODO draw a default icon
                 Log.i(TAG, "no icon found");
             } else {
+                // draw the provided icon
                 Log.i(TAG, "drawing the icon");
                 Rect rect = new Rect();
                 int x = (int) mXOffset;
@@ -233,6 +237,11 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
                 rect.set(x, y, x + 40, y + 40);
                 canvas.drawBitmap(bitmap, null, rect, mGraphicsPaint);
+
+
+                // draw temperature info
+                canvas.drawText(highTempStr, x + 50, y + 30, mHighTemperaturePaint);
+                canvas.drawText(lowTempStr, x + 105, y + 30, mLowTemperaturePaint);
             }
         }
 
@@ -274,7 +283,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             String timeText = mDisplayTime.hour + ":" + String.format("%02d", mDisplayTime.minute);
             String dateText = DateFormatUtil.generateDateString();
             canvas.drawText(timeText, mXOffset, mYOffset, mTimePaint);
-            canvas.drawText(dateText, mXOffset - 2, mYOffset + 35, mDatePaint);
+            canvas.drawText(dateText, mXOffset - 15, mYOffset + 35, mDatePaint);
         }
     }
 }

@@ -3,7 +3,8 @@
     <dimen name="analog_hand_stroke">3dp</dimen>
     <dimen name="y_offset">90dp</dimen>
     <dimen name="x_offset_square">30dp</dimen>
-    <dimen name="x_offset_round">65dp</dimen>
+    <dimen name="x_offset_round">55dp</dimen>
     <dimen name="time_text_size">40dp</dimen>
-    <dimen name="date_text_size">10dp</dimen>
+    <dimen name="date_text_size">15dp</dimen>
+    <dimen name="temperature_text_size">20dp</dimen>
 </resources>

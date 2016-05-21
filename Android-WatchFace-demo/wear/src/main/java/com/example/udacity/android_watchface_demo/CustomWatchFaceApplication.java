@@ -40,8 +40,8 @@ public class CustomWatchFaceApplication extends Application {
     public void populateWithDummyData() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sun);
         forecastDataMap = new HashMap<>();
-        forecastDataMap.put(WearableConstants.TEMPERATURE_HIGH_KEY, "23");
-        forecastDataMap.put(WearableConstants.TEMPERATURE_LOW_KEY, "15");
+        forecastDataMap.put(WearableConstants.TEMPERATURE_HIGH_KEY, "23" + (char) 0x00B0);
+        forecastDataMap.put(WearableConstants.TEMPERATURE_LOW_KEY, "15" + (char) 0x00B0);
         forecastDataMap.put(WearableConstants.ICON_BITMAP_KEY, bitmap);
     }
 }
