@@ -215,10 +215,10 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             drawBackground(canvas, bounds);
             drawTimeText(canvas);
 
-            displayForecastInfo(canvas, bounds);
+            displayForecastInfo(canvas);
         }
 
-        private void displayForecastInfo(Canvas canvas, Rect bounds) {
+        private void displayForecastInfo(Canvas canvas) {
             CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();
             Map<String, Object> forecastDataMap = application.getForecastDataMap();
             Bitmap bitmap = (Bitmap) forecastDataMap.get(WearableConstants.ICON_BITMAP_KEY);
@@ -226,7 +226,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
             String lowTempStr = (String) forecastDataMap.get(WearableConstants.TEMPERATURE_LOW_KEY);
 
             // draw the separator
-            canvas.drawLine(mXOffset + 50, mYOffset + 55, mXOffset + 100, mYOffset + 55, mLowTemperaturePaint);
+            canvas.drawLine(mXOffset + 50, mYOffset + 60, mXOffset + 100, mYOffset + 60, mLowTemperaturePaint);
 
             if (bitmap == null) {
                 // TODO draw a default icon
@@ -236,7 +236,7 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
                 Log.i(TAG, "drawing the icon");
                 Rect rect = new Rect();
                 int x = (int) mXOffset;
-                int y = (int) mYOffset + 70;
+                int y = (int) mYOffset + 75;
 
                 rect.set(x, y, x + 40, y + 40);
                 canvas.drawBitmap(bitmap, null, rect, mGraphicsPaint);
