@@ -16,7 +16,7 @@ import android.util.Log;
  */
 public class DataLayerListenerService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = DataLayerListenerService.class.getSimpleName();
 
     private GoogleApiClient mGoogleApiClient;
 
