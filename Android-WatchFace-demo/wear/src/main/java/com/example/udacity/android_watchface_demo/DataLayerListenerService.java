@@ -17,7 +17,6 @@ import android.util.Log;
 public class DataLayerListenerService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MainActivity";
-    private static final String FORECAST_PATH = "/forecast";
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -63,7 +62,7 @@ public class DataLayerListenerService extends WearableListenerService implements
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
-                if (FORECAST_PATH.equals(path)) {
+                if (WearableConstants.FORECAST_PATH.equals(path)) {
                     Log.i(TAG, "Data Changed for FORECAST_PATH");
                     DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
                     CustomWatchFaceApplication application = (CustomWatchFaceApplication) getApplication();

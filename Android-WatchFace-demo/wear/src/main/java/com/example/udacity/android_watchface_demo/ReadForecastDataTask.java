@@ -43,13 +43,13 @@ public class ReadForecastDataTask extends AsyncTask<DataMapItem, Void, Map<Strin
         }
 
         DataMapItem dataMapItem = params[0];
-        String forecastData = dataMapItem.getDataMap().get("forecast");
+        String forecastData = dataMapItem.getDataMap().get(WearableConstants.FORECAST_KEY);
         Log.i(TAG, "forecast received : " + forecastData);
 
         Map<String, Object> forecastMap = parseForecastData(forecastData);
 
         // TODO proper NPE check
-        Asset asset = dataMapItem.getDataMap().getAsset("icon");
+        Asset asset = dataMapItem.getDataMap().getAsset(WearableConstants.ICON_KEY);
         Log.i(TAG, "the asset received is : " + asset);
 
         InputStream inStream = Wearable.DataApi.getFdForAsset(googleApiClient, asset).await().getInputStream();
@@ -62,7 +62,7 @@ public class ReadForecastDataTask extends AsyncTask<DataMapItem, Void, Map<Strin
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
 
         if (bitmap != null) {
-            forecastMap.put(WearableConstants.ICON_BITMAP_KEY, bitmap);
+            forecastMap.put(WearableConstants.ICON_KEY, bitmap);
         }
 
         return forecastMap;
@@ -79,7 +79,7 @@ public class ReadForecastDataTask extends AsyncTask<DataMapItem, Void, Map<Strin
 
         try {
             JSONObject jsonObject = new JSONObject(inputStr);
-
+            resultMap.put(WearableConstants.SUMMARY_KEY, jsonObject.getString(WearableConstants.SUMMARY_KEY));
             resultMap.put(WearableConstants.TEMPERATURE_HIGH_KEY, jsonObject.getString(WearableConstants.TEMPERATURE_HIGH_KEY));
             resultMap.put(WearableConstants.TEMPERATURE_LOW_KEY, jsonObject.getString(WearableConstants.TEMPERATURE_LOW_KEY));
         } catch (Exception ex) {

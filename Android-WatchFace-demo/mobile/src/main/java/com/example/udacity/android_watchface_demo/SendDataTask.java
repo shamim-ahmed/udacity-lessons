@@ -39,27 +39,28 @@ public class SendDataTask extends AsyncTask<Void, Void, Void> {
             return null;
         }
 
-        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/forecast");
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(MobileConstants.FORECAST_PATH);
         DataMap dataMap = putDataMapRequest.getDataMap();
 
         JSONObject forecastData = new JSONObject();
 
         try {
             forecastData.put(MobileConstants.TIMESTAMP_KEY, Long.toString(new Date().getTime()));
-            forecastData.put(MobileConstants.TEMPERATURE_HIGH_KEY, "23");
-            forecastData.put(MobileConstants.TEMPERATURE_LOW_KEY, "15");
+            forecastData.put(MobileConstants.SUMMARY_KEY, "sunny");
+            forecastData.put(MobileConstants.TEMPERATURE_HIGH_KEY, "23" + (char) 0x00B0);
+            forecastData.put(MobileConstants.TEMPERATURE_LOW_KEY, "15" + (char) 0x00B0);
 
         } catch (Exception ex) {
             Log.e(TAG, "error while constructing json string", ex);
         }
 
-        dataMap.putString("forecast", forecastData.toString());
+        dataMap.putString(MobileConstants.FORECAST_KEY, forecastData.toString());
 
         // send the forecast icon
         Asset iconAsset = toAsset(mBitmap);
 
         if (iconAsset != null) {
-            dataMap.putAsset(MobileConstants.ICON_BITMAP_KEY, iconAsset);
+            dataMap.putAsset(MobileConstants.ICON_KEY, iconAsset);
         }
 
         PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
