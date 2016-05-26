@@ -172,8 +172,13 @@ public class CustomWatchFaceService extends CanvasWatchFaceService {
 
             if (inAmbientMode) {
                 mTimePaint.setColor(Color.parseColor("white"));
+                mDatePaint.setColor(Color.parseColor("white"));
+                mBackgroundColorPaint.setColor(mBackgroundColor);
             } else {
                 mTimePaint.setColor(Color.parseColor("red"));
+                mDatePaint.setColor(Color.parseColor("red"));
+                mBackgroundColorPaint.setColor(Color.parseColor("black"));
+
             }
 
             if (mIsLowBitAmbient) {
