@@ -10,7 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String API_LINK = "https://api.datamarket.azure.com/Bing/Search/v1/News?Query=%27yunus%27&Market=%27en-US%27&$format=json&$top=1";
+
+    private static final String API_LINK = "https://api.datamarket.azure.com/Bing/Search/Web?Query=%27Hillary2%27&$format=json&$top=5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
